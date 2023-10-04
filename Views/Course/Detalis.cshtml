@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CourseSchedule>
+@{
+    ViewData["Title"] = "Detalis";
+}
+
+<h1>Detalis</h1>
+<a class="btn btn-primary mb-2" asp-action="index">Back To Table</a>
+<div>
+    <div class="form-control">
+        <h5 style="display:inline-block;">Title:</h5>
+        <label>@ViewBag.CourseTitle</label>
+    </div>
+    <div class="form-control">
+        <h5 style="display:inline-block;">Description:</h5>
+        <label>@ViewBag.CourseDesc</label>
+    </div>
+    <div class="form-control">
+        <h5 >Course Image:</h5>
+        <img src="~/Images/CoursesImages/@ViewBag.CourseImage" alt="Course Image" class="course-image" />
+    </div>
+    
+
+    @if ((List<Student>?)ViewData["Students"] is null)
+    {
+        <h5>@ViewData["Message"]</h5>
+    }
+    <p>
+        <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Students
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <ul>
+                @foreach (var student in (List<Student>?)ViewData["Students"])
+                {
+
+                    <li class="collapse" id="collapseExample">
+                        @student.User.FullName
+
+                    </li>
+
+                }
+            </ul>
+
+        </div>
+    </div>
+    <hr />
+
+    <h4>Schedule</h4>
+    @foreach (var item in Model)
+    {
+        <div class="form-control">
+            <h5 style="display:inline-block;">Day:</h5>
+            <label>@item.Date</label>
+            <h5 style="display:inline-block;">Start Time:</h5>
+            <label>@item.Start</label>
+            <h5 style="display:inline-block;">End Time:</h5>
+            <label>@item.End</label>
+            </div>
+        
+
+
+        
+    }
+
+
+
+
+
+</div>

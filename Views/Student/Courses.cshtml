@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Course>
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h1>Courses</h1>
+@if(Model.Count() == 0)
+{
+    <h4> Your Courses List Is Empty......</h4>
+}
+@foreach(var course in Model)
+{
+    <div>@course.Title</div>
+    <div>@course.Description</div>
+    <a asp-route-id="@course.ID" asp-action="CancelEnroll" class="btn btn-outline-danger">cancel enrollment</a>
+    <hr />
+}

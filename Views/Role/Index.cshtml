@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityRole>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<partial name="_AddRolePartial"  model="new RoleFormViewModel()"/>
+<table class="table table-primary">
+    <thead>  
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Role in Model)
+        {
+            <tr>
+                <td>@Role.Name</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,143 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal; 
+@using Newtonsoft.Json;
+@model AddCourseViewModel
+@{
+    ViewData["Title"] = "Add";
+}
+
+    <h1>Add Course</h1>
+    <div class="row">
+
+        <form  class="form-control" id="form" asp-action="Add" method="post" enctype="multipart/form-data" >
+        <div class="col-md-4 m-2">
+            <div class="form-floating mb-3">
+                <input maxlength="100" asp-for="Title" class="form-control" autocomplete="on" aria-required="true" placeholder="Title" />
+                <label asp-for="Title" class="form-label"></label>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="col-md-4 m-2">
+            <div class="form-floating mb-3">
+                <textarea maxlength="400" rows="4" style="width:800px; height:150px;" asp-for="Description" class="form-control" autocomplete="on" aria-required="true" placeholder="Description"></textarea>
+                <label asp-for="Description" class="form-label"></label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4 m-2">
+            <div class="form-floating mb-3">
+                <input asp-for="Capacity" value="1" class="form-control" autocomplete="on" aria-required="true" placeholder="Capacity" />
+                <label asp-for="Capacity" class="form-label"></label>
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4 m-2">
+            <div class="form-floating mb-3">
+                <h5>Course Image</h5>
+                <img id="CourseImage" class="course-image" alt="Course image" src="~/images/coursesimages/DefaultImage.png" />
+                <input class="mt-2" style="display:block;" type="file" accept="image/*" name="image"
+                       onchange="document.getElementById('CourseImage').src = window.URL.createObjectURL(this.files[0])" />
+            </div>
+
+        </div>
+        <div class="m-2">
+            <h5 style="display:inline-block">Scheduel</h5>
+            <a style="display:inline-block" id="add" class="btn btn-outline-primary m-5" onclick="add()">+</a>
+            <span id="shedulevalidation" class="text-danger"></span>
+        </div>
+        <ul id="scheduleRow">
+        </ul>
+        <div class="m-2">
+            <input id="save" type="submit" value="Save" class="btn btn-success"/>
+        </div>
+        </form>
+       
+    </div>
+    <script>
+    var index = 0;
+    var AddClick = false;
+    let shedulevalidation = document.getElementById("shedulevalidation");
+    var btnsubmit = document.getElementById("save");
+    var scheduleRow = document.getElementById("scheduleRow");
+
+
+        function add() {
+            shedulevalidation.innerHTML = ``;
+            AddClick = true;
+        var Row = `
+                        <li style="list-style-type: none;" id="${index}">
+                        <hr/>
+                        <div class="form-control-lg">
+                            <h5 style="display:inline;">Week Days</h5>
+                                <select  name="Days[${index}]">
+                                    <option> Saturday </option>
+                                    <option> Sunday </option>
+                                    <option> Monday </option>
+                                    <option> Tuesday </option>
+                                    <option> Wednesday </option>
+                                    <option> Thursday </option>
+                                    <option> Friday </option>
+                                </select>
+                             
+
+                            <h5 style="display:inline;" class="m-2">Start Time</h5>
+                                <input  type = "time"   class="m-0" id="Start"  value="00:00" name = "Starts[${index}]" />
+                          
+
+                            <h5 style="display:inline; " class="m-3">End Time</h5>
+                            <input  type = "time" class="m-0" id="End"  value="00:00" name = "Ends[${index}]" />
+                           
+                                         
+                             <a style="display:inline-block" id="add" class="btn btn-outline-danger m-5" onclick="remove(${index})">X</a>
+                                     <span id="TimeValidation"  class="text-danger"></span>
+                        </div>
+                    </li>`
+            scheduleRow.innerHTML += Row;
+            index++;          
+        }
+
+        function remove(index) {
+        var schedule = document.getElementById(index);
+        var scheduleRow = document.getElementById("scheduleRow");
+            scheduleRow.removeChild(schedule);
+        }
+
+        btnsubmit.addEventListener('click', event => {
+            if (scheduleRow.getElementsByTagName("li").length > 0) {
+            var start = document.getElementById("Start");
+            var end = document.getElementById("End");
+            var timevalidation = document.getElementById("TimeValidation");
+            console.log(`xx`);
+            console.log(start.value);
+
+            if (start.value > end.value) {
+                console.log(`x1`);
+                timevalidation.innerHTML = `start time is greater than end time`;
+                event.preventDefault();
+            }
+            else if (start.value == end.value) {
+                console.log(`x2`);
+                timevalidation.innerHTML = `start time is equal end time`;
+                event.preventDefault();
+            }
+            else {
+                console.log(`x3`);
+                timevalidation.innerHTML = ``;
+            }
+            }
+        else if (scheduleRow.getElementsByTagName("li").length == 0 ) {
+            console.log(`xxx`);
+                shedulevalidation.innerHTML = `You Can Not Add New Course Without Schedule`;
+                event.preventDefault();
+                
+            }
+           
+        })
+
+
+    </script> 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

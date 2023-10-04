@@ -1,0 +1,54 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+/*body, html {
+    height: 100%;
+  
+}*/
+
+body {
+  /*background-image:url(../Images/BackGroundImages/BackGround.jpg);*/
+  /*height:100px;*/
+  margin-bottom: 60px;
+}
+.profile-picture{
+    width:240px;
+    height:240px;
+    object-fit:cover;
+}
+.BackGround-Image {
+    background-image: url(../Images/BackGroundImages/BackGround.jpg);
+    min-height: 550px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-size: cover;
+    position: relative;
+}
+.course-image{
+
+    width:295px;
+    height:295px;
+    object-fit:cover;
+}
+.navbar-image{
+    width:50px;
+    height:50px;
+    object-fit:cover;
+    border-radius:20px 20px;
+}

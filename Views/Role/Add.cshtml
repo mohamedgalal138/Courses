@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IdentityRole
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h1>Add</h1>
+<form method="post" asp-action="Add">
+
+    <div>
+        <label asp-for="Name"></label>
+        <input class="mt-2" asp-for="Name" />
+    </div>
+    <div>
+        <input type="submit" value="Save" class="btn btn-success mt-2" />
+    </div>
+
+</form>
+

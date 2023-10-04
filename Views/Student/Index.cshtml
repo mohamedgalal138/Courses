@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Course>
+@{
+    ViewData["Title"] = "Courses";
+}
+<a class="btn btn-primary mb-2" asp-action="Courses">My Courses</a>
+@if(Model.Count()==0){
+    <h5>Not Found New Courses... </h5>
+}
+@foreach (var Course in Model)
+{
+    <div class="card" style="width: 35rem;">
+        @if (Course.CoursePicture == "DefaultImage.png")
+        {
+            <img class="card-img-top" src="~/Images/CoursesImages/DefaultImage.png" alt="Course Image" />
+        }
+        else
+        {
+            <img class="card-img-top" alt="Course Image" src="~/Images/CoursesImages/@Course.CoursePicture" />
+        }
+        <div class="card-body">
+            <h5 class="card-title">@Course.Title</h5>
+            <p class="card-text">@Course.Description</p>
+            <a id="Enroll" onclick="Enrolled()" asp-route-id="@Course.ID" asp-action="Enroll" class="btn btn-outline-primary">Enroll</a>
+            
+        </div>
+    </div>
+@*     <div>
+        @if (Course.CoursePicture == "DefaultImage.png")
+        {
+            <img class="course-image" src="~/Images/CoursesImages/DefaultImage.png" alt="Course Image" />
+        }
+        else
+        {
+            <img class="course-image" alt="Course Image" src="~/Images/CoursesImages/@Course.CoursePicture" />
+        }
+
+        <h4>Title:</h4>
+        <label>@Course.Title</label>
+        <h5>Description:</h5>
+        <textarea  readonly rows="4" style="font:large; min-width:250px; width:600px;">@Course.Description</textarea>
+        <div>
+        <a id="Enroll" onclick="Enrolled()" asp-route-id="@Course.ID"  asp-action="Enroll" class="btn btn-outline-primary">Enroll</a>
+        </div>
+    </div> *@
+    <hr />
+    
+}
+<script>
+    var button = document.getElementById("Enroll");
+
+    function Enrolled(){
+        if (button.innerHTML == 'Enroll') {
+
+            button.hidden = true;
+        }
+    }
+</script>
+<style>
+    #Enroll{
+      opacity:1;
+      
+    }
+</style>
+
+
+

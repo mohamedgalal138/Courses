@@ -1,0 +1,41 @@
+﻿@model IEnumerable<InstrcutorViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<a class="w-25 btn btn-primary mb-2" asp-action="Add">Add</a>
+@if(Model.Count()==0)
+{
+    <h3>The List Is Empty...</h3>
+}
+else
+{
+    <table class="table table-primary mt-2">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @foreach (var User in Model)
+            {
+                <tr>
+                    <td>@User.Name</td>
+                    <td>@User.Email</td>
+                    <td>@User.PhoneNumber</td>
+                    <td>@User.Age</td>
+                </tr>
+            }
+
+        </tbody>
+
+
+    </table>
+}
+
+

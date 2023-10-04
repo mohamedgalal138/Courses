@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model RoleFormViewModel
+<form method="post" asp-action="add">
+    <div class="input-group mb-3">
+        <input class="form-control" asp-for="Name" placeholder="Role Name" />
+        <input class="w-25 btn btn-primary" type="submit" value="Add" />
+    </div>
+    <span asp-validation-for="Name" class="text-danger"></span>
+</form>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Course>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Courses</h1>
+<a class="btn btn-primary" asp-action="Add">Add</a>
+<hr />
+@if(Model.Count()==0)
+{
+    <h3>The List Is Empty..</h3>
+}
+<style>
+    table {
+      
+        table-layout:fixed;
+    }
+
+    td:hover{
+        overflow: visible;
+    }
+    
+    th,
+    td {
+        overflow:clip;
+        overflow-wrap:break-word;
+        text-align:center;
+        text-overflow:ellipsis;
+       /*  overflow: hidden; */
+     /*    text-overflow:ellipsis; */
+    }
+</style>
+<table class="table table-primary " >
+    <thead>
+        <tr>
+            <th class="col-2">Title</th>
+            <th class="col-3">Description</th>
+            <th class="col-1">Capacity</th>
+            <th class="col-1">Subscribers</th>
+            <th class="col-3">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Description</td>
+                <td>@course.Capacity</td>
+                <td>@course.Subscribers</td>
+                <td> 
+                    <a asp-route-id="@course.ID" asp-action="Detalis" class="btn btn-outline-primary">Details</a>
+                    <a asp-route-id="@course.ID" asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a asp-route-id="@course.ID" asp-action="Delete" class="btn btn-danger"
+                       onclick="">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
