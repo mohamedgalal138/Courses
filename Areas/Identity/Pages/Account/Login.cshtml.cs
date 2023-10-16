@@ -83,10 +83,10 @@ namespace Courses.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
            // returnUrl ??= Url.Content("~/");
-           // returnUrl ??= Url.Content("~/Student/Index");
+            returnUrl ??= Url.Content("~/Student/Index");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var username = new EmailAddressAttribute().IsValid(Input.Email) ?_userManager.FindByEmailAsync(Input.Email).Result.Email : Input.Email;
+           // var username = new EmailAddressAttribute().IsValid(Input.Email) ?_userManager.FindByEmailAsync(Input.Email).Result.Email : Input.Email;
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -94,12 +94,12 @@ namespace Courses.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    //CookieOptions options = new CookieOptions();
-                    //options.Expires = DateTime.Now.AddMinutes(1);
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = DateTime.Now.AddMinutes(1);
                     //Response.Cookies.Append("FullName", user.FullName);
                     //Response.Cookies.Append("ID", user.Id);
-                    TempData["FullName"] = "Mohamed Galal";
-                    TempData.Keep();
+                    // TempData["FullName"] = "Mohamed Galal";
+                    // TempData.Keep();
                     //TempData.Peek("FullName");
                     if (User.IsInRole("Student"))
                     {

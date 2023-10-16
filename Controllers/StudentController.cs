@@ -63,8 +63,8 @@ namespace Courses.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return BadRequest(ex.Message);
             }
-            
             return RedirectToAction(nameof(Index));
+            
         }
 
         public async Task<IActionResult> Courses()
@@ -106,7 +106,6 @@ namespace Courses.Controllers
         private  async Task<int> GetStudentid()
         {
             var id =  _UserManager.GetUserId(User);
-            Debug.WriteLine("Id = " + id);
            // string? UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return await _Context.Students.Where(e => e.AppUserID == id).Select(e => e.Id).SingleOrDefaultAsync();
            

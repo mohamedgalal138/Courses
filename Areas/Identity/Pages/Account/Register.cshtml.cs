@@ -22,6 +22,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Courses.Data;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Courses.Areas.Identity.Pages.Account
 {
@@ -34,6 +36,7 @@ namespace Courses.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _Context;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
@@ -41,7 +44,8 @@ namespace Courses.Areas.Identity.Pages.Account
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ApplicationDbContext context)
+            ApplicationDbContext context ,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -50,6 +54,7 @@ namespace Courses.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _Context = context;
+            _roleManager = roleManager;
         }
 
      
@@ -142,7 +147,44 @@ namespace Courses.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                await _userManager.AddToRoleAsync(user, "Student");
+                if(!await _roleManager.RoleExistsAsync("Admin"))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole()
+                    {
+                        Name = "Admin"
+                    });
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                }
+                else if(!await _roleManager.RoleExistsAsync("Student"))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole()
+                    {
+                        Name = "Student"
+                    });
+                    await _userManager.AddToRoleAsync(user, "Student");
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    await _Context.Students.AddAsync(new Student()
+                    {
+                        AppUserID = userId,
+                        User = user,
+                        BirthDate = Input.BirthDate,
+                        Gender = Input.Gender
+                    });
+                    await _Context.SaveChangesAsync();
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, "Student");
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    await _Context.Students.AddAsync(new Student()
+                    {
+                        AppUserID = userId,
+                        User = user,
+                        BirthDate = Input.BirthDate,
+                        Gender = Input.Gender
+                    });
+                    await _Context.SaveChangesAsync();
+                }
 
                 if (result.Succeeded)
                 {
@@ -155,14 +197,6 @@ namespace Courses.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
-                    await _Context.Students.AddAsync(new Student()
-                    {
-                        AppUserID = userId,
-                        User = user,
-                        BirthDate = Input.BirthDate,
-                        Gender = Input.Gender
-                    });
-                    await _Context.SaveChangesAsync();
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

@@ -9,6 +9,7 @@
     <thead>  
         <tr>
             <th>Name</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
         {
             <tr>
                 <td>@Role.Name</td>
+                <td><a asp-action="Delete" class="btn btn-outline-danger" asp-route-id="@Role.Id">Delete</a></td>
             </tr>
         }
     </tbody>

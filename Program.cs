@@ -26,7 +26,7 @@ CookieOptions cookie = new()
 
 builder.Services.AddIdentity<AppUser, IdentityRole>( o=>
 {
-    //o.ClaimsIdentity.
+   
     o.SignIn.RequireConfirmedPhoneNumber = false;
     o.SignIn.RequireConfirmedEmail = false;
     o.SignIn.RequireConfirmedAccount = false;

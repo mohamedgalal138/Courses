@@ -8,8 +8,8 @@
 }
 @foreach (var Course in Model)
 {
-    <div class="card" style="width: 35rem;">
-        @if (Course.CoursePicture == "DefaultImage.png")
+    <div id="card" class="card" style="width: 30rem;">
+        @if (Course.CoursePicture == "DefaultImage.png" || Course.CoursePicture == null)
         {
             <img class="card-img-top" src="~/Images/CoursesImages/DefaultImage.png" alt="Course Image" />
         }
@@ -46,13 +46,10 @@
     
 }
 <script>
-    var button = document.getElementById("Enroll");
+    var card = document.getElementById("card");
 
     function Enrolled(){
-        if (button.innerHTML == 'Enroll') {
-
-            button.hidden = true;
-        }
+        card.hidden = true;
     }
 </script>
 <style>

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@model IdentityRole
+@model RoleFormViewModel
 @{
     ViewData["Title"] = "Add";
 }
@@ -11,6 +11,7 @@
         <label asp-for="Name"></label>
         <input class="mt-2" asp-for="Name" />
     </div>
+    <span class="text-danger" asp-validation-for="Name"></span>
     <div>
         <input type="submit" value="Save" class="btn btn-success mt-2" />
     </div>

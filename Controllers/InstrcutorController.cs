@@ -15,11 +15,13 @@ namespace Courses.Controllers
     {
         //private readonly IUserStore<AppUser> _UserStore;
         private readonly UserManager<AppUser> _UserManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _Context;
-        public InstrcutorController(UserManager<AppUser> userManager , ApplicationDbContext context  /*IUserStore<AppUser> userStore*/)
+        public InstrcutorController(UserManager<AppUser> userManager , ApplicationDbContext context, RoleManager<IdentityRole> roleManager /*IUserStore<AppUser> userStore*/)
         {
             _UserManager = userManager;
             _Context = context;
+            _roleManager = roleManager;
             //_UserStore = userStore;
         }
         public async Task<IActionResult> Index()
@@ -49,6 +51,14 @@ namespace Courses.Controllers
             await _UserManager.CreateAsync(user, PassWord);
             
            // await _UserStore.SetUserNameAsync(user , user.Email , CancellationToken.None);
+           if(!await _roleManager.RoleExistsAsync("Instrcutor"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole()
+                {
+                    Name = "Instrcutor"
+                });
+
+            }
             await _UserManager.AddToRoleAsync( user, "Instrcutor");
            
             var userid = await _UserManager.GetUserIdAsync(user);

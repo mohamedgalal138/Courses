@@ -25,7 +25,6 @@ namespace Courses.Controllers
         {
             var id = await GetInstrcutorId();
             return View(await _Context.Courses.Where(c => c.InstrctorID == id).ToListAsync());
-           // return await Task.FromResult(View(await _Context.Courses.Where(c=> c.InstrctorID == id).ToListAsync()));
         }
 
         [HttpGet]
@@ -124,6 +123,29 @@ namespace Courses.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return BadRequest();
             }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Edit()
+        {
+            return await Task.FromResult(View());
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var Course = GetCourseById(id);
+                _Context.Entry(Course).State = EntityState.Modified;
+                await _Context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                ModelState.AddModelError(string.Empty , ex.Message);
+                return BadRequest("Something Erorr");
+            }
+        
             return RedirectToAction(nameof(Index));
         }
 
